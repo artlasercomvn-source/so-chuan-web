@@ -70,16 +70,6 @@ export default function SocialInsuranceCalculator() {
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Hệ số trượt giá BHXH là gì?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Là chỉ số lạm phát do Nhà nước công bố hàng năm để nhân bù đắp vào mức lương đóng BHXH các năm trước của người lao động, đảm bảo không bị thiệt thòi khi nhận tiền." }
-          }
-        ]
       }
     ]
   };
@@ -143,12 +133,15 @@ export default function SocialInsuranceCalculator() {
         </div>
       </div>
 
-      {/* KHU VỰC NỘI DUNG MỞ RỘNG (DARK THEME) */}
+      {/* KHU VỰC NỘI DUNG MỞ RỘNG (TẬP TRUNG SEO) */}
       <div className="bg-slate-900 border-t border-slate-800 text-slate-300 py-16 print:hidden">
         <div className="max-w-4xl mx-auto p-4 md:p-8">
           
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">1. Bảng hệ số trượt giá mới nhất</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">1. Hệ số trượt giá BHXH mới nhất</h2>
+            <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+              Nhà nước công bố hệ số trượt giá (lạm phát) hàng năm để nhân bù đắp vào mức lương đóng BHXH các năm trước của bạn, đảm bảo bạn không bị thiệt thòi khi rút tiền.
+            </p>
             <div className="overflow-x-auto bg-slate-800/50 border border-slate-700 rounded-2xl">
               <table className="w-full text-center text-sm">
                 <thead>
@@ -162,51 +155,48 @@ export default function SocialInsuranceCalculator() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-slate-500 mt-3">*Hệ số trượt giá được hệ thống của Số Chuẩn tự động nhân vào kết quả tính toán phía trên.</p>
           </div>
 
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">2. Hồ sơ & Thủ tục chuẩn bị rút BHXH</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
-                <span className="text-xl mb-3 block">📄</span>
-                <p className="text-sm text-slate-300">Sổ BHXH gốc đã được chốt (bản gốc kèm các tờ rời).</p>
+            <h2 className="text-2xl font-bold text-white mb-6">2. Quy tắc tính chặng đóng trước và sau 2014</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h3 className="text-lg font-bold text-blue-400 mb-3">Thời gian đóng trước 2014</h3>
+                <div className="text-sm text-slate-400 leading-relaxed">
+                  Cứ mỗi năm đóng BHXH, người lao động được tính bằng <strong className="text-white">1.5 tháng</strong> mức bình quân tiền lương tháng đóng BHXH.
+                </div>
               </div>
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
-                <span className="text-xl mb-3 block">🪪</span>
-                <p className="text-sm text-slate-300">Căn cước công dân (CCCD) gắn chip bản chính để đối chiếu.</p>
-              </div>
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
-                <span className="text-xl mb-3 block">🏦</span>
-                <p className="text-sm text-slate-300">Số tài khoản ngân hàng chính chủ để nhận tiền chuyển khoản.</p>
-              </div>
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
-                <span className="text-xl mb-3 block">📱</span>
-                <p className="text-sm text-slate-300">Tài khoản VssID để tra cứu nhanh quá trình đóng nếu cần.</p>
+              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h3 className="text-lg font-bold text-emerald-400 mb-3">Thời gian đóng từ năm 2014</h3>
+                <div className="text-sm text-slate-400 leading-relaxed">
+                  Cứ mỗi năm đóng BHXH, người lao động được tính bằng <strong className="text-white">2.0 tháng</strong> mức bình quân tiền lương tháng đóng BHXH.
+                </div>
               </div>
             </div>
           </div>
 
-          {/* KHỐI BẢN ĐỒ VÀ LIÊN HỆ */}
-          <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-white mb-6">Liên hệ Tư vấn & Cơ quan BHXH</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <p className="text-slate-400">Nếu bạn gặp khó khăn trong việc làm thủ tục hoặc tính toán quá trình đóng phức tạp, hãy liên hệ ngay với chuyên gia của chúng tôi.</p>
-                <ul className="space-y-3 text-sm text-slate-300">
-                  <li className="flex gap-3 items-center">📍 <span>Trụ sở chính: Quận Đống Đa, Hà Nội, Việt Nam</span></li>
-                  <li className="flex gap-3 items-center">📞 <span>Hotline: 1900.xxxx</span></li>
-                  <li className="flex gap-3 items-center">✉️ <span>Email: contact@sochuan.vn</span></li>
-                </ul>
-                <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl mt-4 transition-colors w-full md:w-auto">
-                  Tư vấn rút BHXH miễn phí
-                </button>
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-6">3. Hồ sơ cần chuẩn bị rút BHXH</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <span className="text-3xl block mb-2">📄</span>
+                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">Sổ BHXH gốc</p>
+                <p className="text-xs text-slate-500 mt-1">Đã chốt (bản gốc kèm tờ rời)</p>
               </div>
-              <div className="h-64 rounded-xl overflow-hidden border border-slate-700">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.095593888365!2d105.8239019!3d21.0288602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab748a044321%3A0x6b3017a61d6706e!2zxJDhu5FuZyDEkGEsIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
-                  width="100%" height="100%" style={{ border: 0 }} allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Bản đồ định vị BHXH">
-                </iframe>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <span className="text-3xl block mb-2">🪪</span>
+                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">CCCD gắn chip</p>
+                <p className="text-xs text-slate-500 mt-1">Bản gốc để xuất trình đối chiếu</p>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <span className="text-3xl block mb-2">🏦</span>
+                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">Tài khoản Ngân hàng</p>
+                <p className="text-xs text-slate-500 mt-1">Chính chủ để nhận tiền giải ngân</p>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <span className="text-3xl block mb-2">📝</span>
+                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">Đơn đề nghị</p>
+                <p className="text-xs text-slate-500 mt-1">Mẫu số 14-HSB (Có sẵn tại cơ quan)</p>
               </div>
             </div>
           </div>

@@ -79,7 +79,6 @@ export default function GrossNetCalculator() {
   }, [income, isGross, region, insuranceType, customInsurance, dependents]);
 
   const formatCurrency = (val: number) => Math.round(val).toLocaleString('vi-VN');
-
   const handlePrint = () => { window.print(); };
 
   const jsonLd = {
@@ -87,25 +86,10 @@ export default function GrossNetCalculator() {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "name": "Công cụ tính lương Gross sang Net chuẩn xác 2026",
+        "name": "Công cụ tính lương Gross sang Net chuẩn xác",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Lương Gross là gì?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Lương Gross là tổng thu nhập mỗi tháng mà doanh nghiệp trả cho người lao động, bao gồm lương cơ bản và các khoản trợ cấp, phụ cấp, hoa hồng... nhưng chưa trừ các khoản bảo hiểm bắt buộc và thuế TNCN." }
-          },
-          {
-            "@type": "Question",
-            "name": "Lương Net là gì?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Lương Net là số tiền thực nhận của người lao động sau khi đã trừ đi các khoản chi phí bảo hiểm (BHXH, BHYT, BHTN) và Thuế thu nhập cá nhân (nếu có)." }
-          }
-        ]
       }
     ]
   };
@@ -113,9 +97,8 @@ export default function GrossNetCalculator() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      
-      {/* KHU VỰC CÔNG CỤ TÍNH TOÁN */}
       <div className="max-w-7xl mx-auto p-4 md:p-8">
+        
         <div className="mb-8 flex justify-between items-center print:hidden">
           <a href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors bg-slate-100 hover:bg-blue-50 px-4 py-2 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -128,7 +111,7 @@ export default function GrossNetCalculator() {
         </div>
 
         <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 text-center uppercase tracking-tight">
-          Công Cụ Tính Lương Gross - Net 2026
+          Công Cụ Tính Lương Gross - Net
         </h1>
         <p className="text-center text-slate-500 mb-10 max-w-2xl mx-auto">
           Chiết tính tự động dựa trên mức lương cơ sở 2.530.000đ và mức lương tối thiểu vùng mới nhất áp dụng theo Nghị định của Chính phủ.
@@ -207,71 +190,67 @@ export default function GrossNetCalculator() {
         </div>
       </div>
 
-      {/* KHU VỰC NỘI DUNG MỞ RỘNG (DARK THEME) */}
+      {/* KHU VỰC NỘI DUNG MỞ RỘNG (TẬP TRUNG SEO & TIME ON SITE) */}
       <div className="bg-slate-900 border-t border-slate-800 text-slate-300 py-16 print:hidden">
         <div className="max-w-4xl mx-auto p-4 md:p-8">
           
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">1. Quy định cập nhật mới nhất 2026</h2>
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 space-y-4">
-              <p>Mức lương cơ sở áp dụng mới nhất: <strong className="text-blue-400">2.530.000 đồng/tháng</strong> (Tăng theo nghị định Chính phủ).</p>
-              <p>Mức giảm trừ gia cảnh bản thân: <strong className="text-blue-400">11.000.000 đồng/tháng</strong>.</p>
-              <p>Mức giảm trừ người phụ thuộc: <strong className="text-blue-400">4.400.000 đồng/tháng/người</strong>.</p>
-            </div>
-          </div>
-
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">2. Lương Gross và Lương Net là gì?</h2>
-            <div className="space-y-4 leading-relaxed text-slate-400">
-              <p><strong className="text-white">Lương Gross</strong> là tổng thu nhập mỗi tháng mà doanh nghiệp trả cho người lao động, bao gồm cả lương cơ bản và các khoản trợ cấp, phụ cấp, hoa hồng... trong đó có cả các khoản đóng bảo hiểm và thuế thu nhập cá nhân.</p>
-              <p><strong className="text-white">Lương Net</strong> là số tiền thực nhận mà người lao động được nhận về tài khoản sau khi công ty đã trừ hết các khoản chi phí bảo hiểm (BHXH, BHYT, BHTN) và thuế TNCN (nếu có).</p>
-            </div>
-          </div>
-
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">3. Câu hỏi thường gặp (Q&A)</h2>
-            <div className="space-y-4">
-              <details className="group bg-slate-800/30 border border-slate-700 rounded-xl overflow-hidden cursor-pointer open:bg-slate-800/80 transition-colors">
-                <summary className="font-bold text-white p-5 flex justify-between items-center">
-                  Nhận lương Net hay Gross có lợi hơn?
-                  <span className="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
-                </summary>
-                <div className="p-5 pt-0 text-slate-400 border-t border-slate-700/50 mt-2">
-                  Về mặt tài chính, tổng chi phí doanh nghiệp bỏ ra và số tiền bạn nhận được là như nhau nếu công ty minh bạch. Tuy nhiên, đàm phán lương Gross sẽ giúp bạn chủ động kiểm soát được mức đóng bảo hiểm thực tế của mình, bảo vệ quyền lợi về hưu trí, thai sản tốt hơn.
-                </div>
-              </details>
-              <details className="group bg-slate-800/30 border border-slate-700 rounded-xl overflow-hidden cursor-pointer open:bg-slate-800/80 transition-colors">
-                <summary className="font-bold text-white p-5 flex justify-between items-center">
-                  Tỷ lệ đóng bảo hiểm bắt buộc năm 2026 là bao nhiêu?
-                  <span className="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
-                </summary>
-                <div className="p-5 pt-0 text-slate-400 border-t border-slate-700/50 mt-2">
-                  Người lao động trích đóng 10.5% vào quỹ bảo hiểm. Cụ thể: Quỹ Hưu trí tử tuất (BHXH): 8%; Quỹ Bảo hiểm y tế (BHYT): 1.5%; Quỹ Bảo hiểm thất nghiệp (BHTN): 1%.
-                </div>
-              </details>
-            </div>
-          </div>
-
-          {/* KHỐI BẢN ĐỒ VÀ LIÊN HỆ */}
-          <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-white mb-6">Liên hệ Tư vấn & Bản đồ định vị</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <p className="text-slate-400">Đội ngũ chuyên gia của "Số Chuẩn" luôn sẵn sàng hỗ trợ bạn xử lý các thuật toán tài chính doanh nghiệp và cá nhân một cách chính xác nhất.</p>
-                <ul className="space-y-3 text-sm text-slate-300">
-                  <li className="flex gap-3 items-center">📍 <span>Trụ sở chính: Quận Đống Đa, Hà Nội, Việt Nam</span></li>
-                  <li className="flex gap-3 items-center">📞 <span>Hotline: 1900.xxxx</span></li>
-                  <li className="flex gap-3 items-center">✉️ <span>Email: contact@sochuan.vn</span></li>
-                </ul>
-                <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl mt-4 transition-colors w-full md:w-auto">
-                  Gửi yêu cầu hỗ trợ
-                </button>
+            <h2 className="text-2xl font-bold text-white mb-6">1. Lương Gross và Lương Net là gì?</h2>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h3 className="text-lg font-bold text-blue-400 mb-3">Lương Gross (Lương gộp)</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Là tổng thu nhập mỗi tháng mà doanh nghiệp cam kết trả cho bạn. 
+                </p>
+                <p className="text-sm text-slate-400 leading-relaxed mt-2">
+                  Mức lương này <strong className="text-white">chưa bị trừ</strong> các khoản bảo hiểm bắt buộc và Thuế thu nhập cá nhân (TNCN).
+                </p>
               </div>
-              <div className="h-64 rounded-xl overflow-hidden border border-slate-700">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.095593888365!2d105.8239019!3d21.0288602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab748a044321%3A0x6b3017a61d6706e!2zxJDhu5FuZyDEkGEsIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
-                  width="100%" height="100%" style={{ border: 0 }} allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Bản đồ định vị Số Chuẩn">
-                </iframe>
+              
+              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+                <h3 className="text-lg font-bold text-emerald-400 mb-3">Lương Net (Lương ròng)</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Là số tiền thực tế bạn nhận được (chuyển khoản về thẻ ATM) vào mỗi kỳ lương.
+                </p>
+                <p className="text-sm text-slate-400 leading-relaxed mt-2">
+                  Mức lương này <strong className="text-white">đã bị trừ</strong> toàn bộ chi phí bảo hiểm và thuế TNCN theo quy định.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-6">2. Công thức quy đổi nhanh</h2>
+            <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 md:p-8 flex items-center justify-center text-center">
+              <div>
+                <div className="text-slate-400 text-sm mb-3 uppercase tracking-wider font-bold">Công thức chuẩn</div>
+                <div className="text-xl md:text-2xl font-black text-white">
+                  Lương Net = Lương Gross - (BHXH + BHYT + BHTN) - Thuế TNCN
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-6">3. Tỷ lệ trích đóng bảo hiểm bắt buộc</h2>
+            <p className="text-slate-400 text-sm mb-4">Căn cứ theo quy định của Luật Bảo hiểm xã hội hiện hành, tỷ lệ trích đóng từ lương của người lao động như sau:</p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <div className="text-3xl font-black text-blue-400 mb-2">8%</div>
+                <div className="text-sm font-bold text-white">Quỹ Hưu trí, Tử tuất</div>
+                <div className="text-xs text-slate-500 mt-1">(Bảo hiểm xã hội)</div>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <div className="text-3xl font-black text-emerald-400 mb-2">1.5%</div>
+                <div className="text-sm font-bold text-white">Quỹ Khám chữa bệnh</div>
+                <div className="text-xs text-slate-500 mt-1">(Bảo hiểm y tế)</div>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
+                <div className="text-3xl font-black text-rose-400 mb-2">1%</div>
+                <div className="text-sm font-bold text-white">Quỹ Trợ cấp thất nghiệp</div>
+                <div className="text-xs text-slate-500 mt-1">(Bảo hiểm thất nghiệp)</div>
               </div>
             </div>
           </div>

@@ -31,7 +31,7 @@ export default function LoanCalculator() {
         currentPrincipal -= monthlyPrincipal;
       }
     }
-    return { summary: { totalPrincipal: principal, totalInterest: totalInterest, totalAmount: principal + totalInterest }, schedule };
+    return { summary: { totalPrincipal: principal, totalInterest: totalInterest, totalAmount: principal + totalAmount }, schedule };
   }, [amount, rate, months, method]);
 
   const formatCurrency = (val: number) => Math.round(val).toLocaleString('vi-VN');
@@ -42,20 +42,10 @@ export default function LoanCalculator() {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "name": "Công cụ tính lãi suất vay ngân hàng 2026",
+        "name": "Công cụ tính lãi suất vay ngân hàng chuẩn xác",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Dư nợ giảm dần là gì?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Là phương pháp tính tiền lãi dựa trên số tiền thực tế bạn còn nợ ngân hàng. Sau mỗi tháng trả bớt gốc, tiền lãi tháng sau sẽ thấp hơn tháng trước." }
-          }
-        ]
       }
     ]
   };
@@ -123,66 +113,60 @@ export default function LoanCalculator() {
         </div>
       </div>
 
-      {/* KHU VỰC NỘI DUNG MỞ RỘNG (DARK THEME) */}
+      {/* KHU VỰC NỘI DUNG MỞ RỘNG */}
       <div className="bg-slate-900 border-t border-slate-800 text-slate-300 py-16 print:hidden">
         <div className="max-w-4xl mx-auto p-4 md:p-8">
           
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">1. Phân biệt các phương pháp tính lãi vay</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">1. Phân biệt các phương pháp tính lãi</h2>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
                 <h3 className="text-lg font-bold text-blue-400 mb-3">Tính theo dư nợ ban đầu</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">Tiền lãi mỗi tháng đều bằng nhau và được tính dựa trên toàn bộ số tiền gốc mà bạn vay từ ban đầu, không quan tâm đến việc bạn đã trả bớt gốc bao nhiêu.</p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Tiền lãi được tính dựa trên số tiền vay ban đầu trong suốt thời gian vay.
+                </p>
+                <ul className="mt-4 space-y-2 text-sm text-slate-300">
+                  <li className="flex items-start gap-2"><span>▪️</span> <span>Mỗi tháng trả số tiền giống hệt nhau.</span></li>
+                  <li className="flex items-start gap-2"><span>▪️</span> <span>Dễ nhớ, dễ quản lý chi tiêu.</span></li>
+                  <li className="flex items-start gap-2"><span>▪️</span> <span>Thường áp dụng cho vay tiêu dùng, vay tín chấp nhỏ.</span></li>
+                </ul>
               </div>
+              
               <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
                 <h3 className="text-lg font-bold text-emerald-400 mb-3">Tính theo dư nợ giảm dần</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">Tiền lãi mỗi tháng được tính dựa trên số tiền thực tế bạn còn nợ. Vì mỗi tháng bạn đã trả bớt một phần gốc, nên tiền lãi các tháng sau sẽ ít dần đi.</p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Tiền lãi chỉ tính trên số tiền thực tế bạn còn nợ ngân hàng.
+                </p>
+                <ul className="mt-4 space-y-2 text-sm text-slate-300">
+                  <li className="flex items-start gap-2"><span>▪️</span> <span>Tháng đầu trả nhiều, các tháng sau giảm dần.</span></li>
+                  <li className="flex items-start gap-2"><span>▪️</span> <span>Tổng tiền lãi phải trả thực tế ít hơn.</span></li>
+                  <li className="flex items-start gap-2"><span>▪️</span> <span>Thường áp dụng vay mua nhà, mua ô tô.</span></li>
+                </ul>
               </div>
             </div>
           </div>
 
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">2. Quy trình làm hồ sơ vay vốn ngân hàng</h2>
-            <div className="relative border-l-2 border-slate-700 ml-3 md:ml-4 space-y-8 pb-4">
-              <div className="relative pl-8">
-                <div className="absolute w-6 h-6 bg-blue-600 rounded-full -left-[13px] top-0 border-4 border-slate-900 flex items-center justify-center text-[10px] font-bold text-white">1</div>
-                <h3 className="font-bold text-white mb-2">Bước 1: Chuẩn bị hồ sơ</h3>
-                <p className="text-sm text-slate-400">CCCD, Giấy xác nhận tình trạng hôn nhân, Hợp đồng lao động, Sao kê lương 3-6 tháng, Hồ sơ mục đích vay (Hợp đồng cọc nhà/xe).</p>
+            <h2 className="text-2xl font-bold text-white mb-6">2. Công thức tính toán chi tiết</h2>
+            <div className="space-y-4">
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <div className="font-bold text-white mb-2">Tiền gốc hàng tháng:</div>
+                <div className="text-blue-400 font-mono bg-slate-900 p-3 rounded-lg border border-slate-700">
+                  Gốc = Tổng số tiền vay / Tổng số tháng vay
+                </div>
               </div>
-              <div className="relative pl-8">
-                <div className="absolute w-6 h-6 bg-slate-700 rounded-full -left-[13px] top-0 border-4 border-slate-900 flex items-center justify-center text-[10px] font-bold text-white">2</div>
-                <h3 className="font-bold text-white mb-2">Bước 2: Thẩm định tài sản & Năng lực tài chính</h3>
-                <p className="text-sm text-slate-400">Ngân hàng sẽ cử chuyên viên định giá tài sản thế chấp và kiểm tra lịch sử tín dụng (CIC) của bạn.</p>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <div className="font-bold text-white mb-2">Tiền lãi tháng đầu:</div>
+                <div className="text-emerald-400 font-mono bg-slate-900 p-3 rounded-lg border border-slate-700">
+                  Lãi tháng 1 = Tổng tiền vay ban đầu × Lãi suất theo tháng
+                </div>
               </div>
-              <div className="relative pl-8">
-                <div className="absolute w-6 h-6 bg-slate-700 rounded-full -left-[13px] top-0 border-4 border-slate-900 flex items-center justify-center text-[10px] font-bold text-white">3</div>
-                <h3 className="font-bold text-white mb-2">Bước 3: Ký hợp đồng & Giải ngân</h3>
-                <p className="text-sm text-slate-400">Ra phòng công chứng ký hợp đồng thế chấp. Ngân hàng tiến hành phong tỏa tài sản và giải ngân tiền cho bên bán hoặc vào tài khoản của bạn.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* KHỐI BẢN ĐỒ VÀ LIÊN HỆ */}
-          <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-white mb-6">Liên hệ Tư vấn & Bản đồ định vị</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <p className="text-slate-400">Đội ngũ chuyên gia của "Số Chuẩn" luôn sẵn sàng hỗ trợ bạn tính toán và lựa chọn gói vay ngân hàng tối ưu nhất.</p>
-                <ul className="space-y-3 text-sm text-slate-300">
-                  <li className="flex gap-3 items-center">📍 <span>Trụ sở chính: Quận Đống Đa, Hà Nội, Việt Nam</span></li>
-                  <li className="flex gap-3 items-center">📞 <span>Hotline: 1900.xxxx</span></li>
-                  <li className="flex gap-3 items-center">✉️ <span>Email: contact@sochuan.vn</span></li>
-                </ul>
-                <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl mt-4 transition-colors w-full md:w-auto">
-                  Gửi yêu cầu tư vấn vay
-                </button>
-              </div>
-              <div className="h-64 rounded-xl overflow-hidden border border-slate-700">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.095593888365!2d105.8239019!3d21.0288602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab748a044321%3A0x6b3017a61d6706e!2zxJDhu5FuZyDEkGEsIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
-                  width="100%" height="100%" style={{ border: 0 }} allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Bản đồ định vị">
-                </iframe>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <div className="font-bold text-white mb-2">Tiền lãi các tháng tiếp theo (Giảm dần):</div>
+                <div className="text-rose-400 font-mono bg-slate-900 p-3 rounded-lg border border-slate-700">
+                  Lãi tháng n = (Tổng tiền vay - Gốc đã trả) × Lãi suất theo tháng
+                </div>
               </div>
             </div>
           </div>
