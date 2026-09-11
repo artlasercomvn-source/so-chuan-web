@@ -70,6 +70,21 @@ export default function SocialInsuranceCalculator() {
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Hệ số trượt giá BHXH là gì?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Hệ số trượt giá (lạm phát) là chỉ số do Nhà nước công bố hàng năm để nhân bù đắp vào mức lương đóng BHXH các năm trước của người lao động, đảm bảo giá trị tiền nhận về không bị mất giá." }
+          },
+          {
+            "@type": "Question",
+            "name": "Làm tròn tháng lẻ khi rút BHXH như thế nào?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Theo quy định, thời gian đóng BHXH có tháng lẻ từ 1 đến 6 tháng được làm tròn thành nửa năm (0.5 năm). Nếu lẻ từ 7 đến 11 tháng được làm tròn thành 1 năm." }
+          }
+        ]
       }
     ]
   };
@@ -133,71 +148,84 @@ export default function SocialInsuranceCalculator() {
         </div>
       </div>
 
-      {/* KHU VỰC NỘI DUNG MỞ RỘNG (TẬP TRUNG SEO) */}
+      {/* KHU VỰC NỘI DUNG CHUẨN SEO & TIME-ON-SITE (DARK THEME TỐI GIẢN) */}
       <div className="bg-slate-900 border-t border-slate-800 text-slate-300 py-16 print:hidden">
         <div className="max-w-4xl mx-auto p-4 md:p-8">
           
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">1. Hệ số trượt giá BHXH mới nhất</h2>
-            <p className="text-sm text-slate-400 mb-4 leading-relaxed">
-              Nhà nước công bố hệ số trượt giá (lạm phát) hàng năm để nhân bù đắp vào mức lương đóng BHXH các năm trước của bạn, đảm bảo bạn không bị thiệt thòi khi rút tiền.
-            </p>
-            <div className="overflow-x-auto bg-slate-800/50 border border-slate-700 rounded-2xl">
-              <table className="w-full text-center text-sm">
-                <thead>
-                  <tr className="bg-slate-800 text-white font-bold"><th className="p-3 border-b border-slate-700">Năm đóng</th><th className="p-3 border-b border-slate-700 border-l">Hệ số</th><th className="p-3 border-b border-slate-700 border-l">Năm đóng</th><th className="p-3 border-b border-slate-700 border-l">Hệ số</th></tr>
-                </thead>
-                <tbody className="text-slate-400">
-                  <tr><td className="p-3 border-b border-slate-700">Trước 2015</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">&gt; 1.42</td><td className="p-3 border-b border-slate-700 border-l">2021</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.20</td></tr>
-                  <tr><td className="p-3 border-b border-slate-700">2018</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.32</td><td className="p-3 border-b border-slate-700 border-l">2022</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.18</td></tr>
-                  <tr><td className="p-3 border-b border-slate-700">2019</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.28</td><td className="p-3 border-b border-slate-700 border-l">2023</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.14</td></tr>
-                  <tr><td className="p-3 border-b border-slate-700">2020</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.23</td><td className="p-3 border-b border-slate-700 border-l">2024</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.11</td></tr>
-                </tbody>
-              </table>
+          <div className="mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">Bảng Hệ Số Trượt Giá Áp Dụng Mới Nhất</h2>
+            <p className="text-center text-slate-400 mb-8 max-w-2xl mx-auto">Hệ số trượt giá (lạm phát) được hệ thống tự động nội suy và nhân với mức lương đóng BHXH của từng giai đoạn để đảm bảo quyền lợi cao nhất cho bạn.</p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { year: 'Trước 2015', rate: '> 1.42' }, { year: '2016', rate: '1.38' }, { year: '2017', rate: '1.38' }, { year: '2018', rate: '1.32' },
+                { year: '2019', rate: '1.28' }, { year: '2020', rate: '1.23' }, { year: '2021', rate: '1.20' }, { year: '2022', rate: '1.18' },
+                { year: '2023', rate: '1.14' }, { year: '2024', rate: '1.11' }, { year: '2025', rate: '1.07' }, { year: '2026', rate: '1.00' }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-slate-800 transition-colors">
+                  <span className="text-slate-400 text-sm font-medium mb-1">{item.year}</span>
+                  <span className="text-xl font-black text-blue-400">{item.rate}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">2. Quy tắc tính chặng đóng trước và sau 2014</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
-                <h3 className="text-lg font-bold text-blue-400 mb-3">Thời gian đóng trước 2014</h3>
-                <div className="text-sm text-slate-400 leading-relaxed">
-                  Cứ mỗi năm đóng BHXH, người lao động được tính bằng <strong className="text-white">1.5 tháng</strong> mức bình quân tiền lương tháng đóng BHXH.
+          <div className="mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">Lộ Trình Rút Tiền BHXH 1 Lần</h2>
+            
+            <div className="relative border-l-2 border-slate-700 ml-4 md:ml-8 space-y-12 pb-8">
+              <div className="relative pl-10 md:pl-12">
+                <div className="absolute w-10 h-10 bg-slate-900 rounded-full -left-[21px] top-0 border-4 border-slate-700 flex items-center justify-center text-sm font-black text-slate-400">01</div>
+                <h3 className="text-xl font-bold text-blue-400 mb-3">Chuẩn bị hồ sơ đầy đủ</h3>
+                <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 text-sm text-slate-300 leading-relaxed">
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2"><span>▪️</span> <span><strong>Sổ BHXH gốc:</strong> Đã chốt quá trình đóng (Bao gồm sổ và các tờ rời).</span></li>
+                    <li className="flex items-start gap-2"><span>▪️</span> <span><strong>CCCD/CMND:</strong> Bản chính để xuất trình đối chiếu.</span></li>
+                    <li className="flex items-start gap-2"><span>▪️</span> <span><strong>Đơn đề nghị:</strong> Mẫu 14-HSB (Có thể xin trực tiếp tại cơ quan BHXH).</span></li>
+                  </ul>
                 </div>
               </div>
-              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
-                <h3 className="text-lg font-bold text-emerald-400 mb-3">Thời gian đóng từ năm 2014</h3>
-                <div className="text-sm text-slate-400 leading-relaxed">
-                  Cứ mỗi năm đóng BHXH, người lao động được tính bằng <strong className="text-white">2.0 tháng</strong> mức bình quân tiền lương tháng đóng BHXH.
+
+              <div className="relative pl-10 md:pl-12">
+                <div className="absolute w-10 h-10 bg-slate-900 rounded-full -left-[21px] top-0 border-4 border-slate-700 flex items-center justify-center text-sm font-black text-slate-400">02</div>
+                <h3 className="text-xl font-bold text-blue-400 mb-3">Nộp hồ sơ trực tiếp</h3>
+                <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 text-sm text-slate-300 leading-relaxed">
+                  Đến trực tiếp cơ quan BHXH quận/huyện hoặc tỉnh/thành phố nơi bạn đang thường trú hoặc tạm trú. Lấy số thứ tự và nộp hồ sơ tại bộ phận Một cửa.
+                </div>
+              </div>
+
+              <div className="relative pl-10 md:pl-12">
+                <div className="absolute w-10 h-10 bg-blue-600 rounded-full -left-[21px] top-0 border-4 border-slate-900 flex items-center justify-center text-sm font-black text-white shadow-[0_0_15px_rgba(37,99,235,0.5)]">03</div>
+                <h3 className="text-xl font-bold text-emerald-400 mb-3">Chờ duyệt & Nhận tiền</h3>
+                <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 text-sm text-slate-300 leading-relaxed">
+                  Trong thời hạn tối đa <strong>05 ngày làm việc</strong> kể từ ngày nhận đủ hồ sơ hợp lệ, cơ quan BHXH sẽ giải quyết và chuyển tiền thẳng vào tài khoản ngân hàng của bạn.
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">3. Hồ sơ cần chuẩn bị rút BHXH</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
-                <span className="text-3xl block mb-2">📄</span>
-                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">Sổ BHXH gốc</p>
-                <p className="text-xs text-slate-500 mt-1">Đã chốt (bản gốc kèm tờ rời)</p>
-              </div>
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
-                <span className="text-3xl block mb-2">🪪</span>
-                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">CCCD gắn chip</p>
-                <p className="text-xs text-slate-500 mt-1">Bản gốc để xuất trình đối chiếu</p>
-              </div>
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
-                <span className="text-3xl block mb-2">🏦</span>
-                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">Tài khoản Ngân hàng</p>
-                <p className="text-xs text-slate-500 mt-1">Chính chủ để nhận tiền giải ngân</p>
-              </div>
-              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5 text-center">
-                <span className="text-3xl block mb-2">📝</span>
-                <p className="text-xs text-slate-300 font-bold uppercase tracking-wide">Đơn đề nghị</p>
-                <p className="text-xs text-slate-500 mt-1">Mẫu số 14-HSB (Có sẵn tại cơ quan)</p>
-              </div>
+          <div className="mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">Câu Hỏi Thường Gặp (FAQ)</h2>
+            <div className="space-y-4 max-w-3xl mx-auto">
+              <details className="group bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden cursor-pointer hover:bg-slate-800/60 transition-colors">
+                <summary className="font-bold text-white p-6 flex justify-between items-center outline-none">
+                  Làm tròn tháng lẻ khi tính tiền như thế nào?
+                  <span className="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="p-6 pt-0 text-sm text-slate-400 leading-relaxed border-t border-slate-700/30 mt-2">
+                  Theo quy định, thời gian đóng BHXH có tháng lẻ từ <strong>1 đến 6 tháng</strong> được làm tròn thành nửa năm (0.5 năm). Nếu lẻ từ <strong>7 đến 11 tháng</strong> được làm tròn thành 1 năm để tính hệ số nhân.
+                </div>
+              </details>
+
+              <details className="group bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden cursor-pointer hover:bg-slate-800/60 transition-colors">
+                <summary className="font-bold text-white p-6 flex justify-between items-center outline-none">
+                  Nghỉ việc bao lâu thì được rút tiền?
+                  <span className="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="p-6 pt-0 text-sm text-slate-400 leading-relaxed border-t border-slate-700/30 mt-2">
+                  Người lao động tham gia BHXH bắt buộc sau <strong>01 năm nghỉ việc</strong> (12 tháng) mà chưa đủ điều kiện hưởng lương hưu và không tiếp tục đóng BHXH thì sẽ đủ điều kiện làm thủ tục rút 1 lần.
+                </div>
+              </details>
             </div>
           </div>
 
