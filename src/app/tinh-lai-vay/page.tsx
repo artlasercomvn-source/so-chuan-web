@@ -35,10 +35,8 @@ export default function LoanCalculator() {
         let monthlyInterest = 0;
 
         if (method === 'fixed') {
-          // Tính trên dư nợ ban đầu
           monthlyInterest = principal * monthlyRate;
         } else {
-          // Tính trên dư nợ giảm dần
           monthlyInterest = currentPrincipal * monthlyRate;
         }
 
@@ -69,32 +67,37 @@ export default function LoanCalculator() {
 
   const formatCurrency = (val: number) => Math.round(val).toLocaleString('vi-VN');
 
-  // Khởi tạo Schema Markup cho SEO
+  const handlePrint = () => {
+    window.print();
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Công cụ tính lãi suất vay ngân hàng",
+    "name": "Công cụ tính lãi suất vay ngân hàng chuẩn xác",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "VND"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Số Chuẩn"
-    },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" },
+    "publisher": { "@type": "Organization", "name": "Số Chuẩn" },
     "description": "Hệ thống tính lãi vay ngân hàng chuẩn xác, hỗ trợ phương pháp dư nợ giảm dần và dư nợ ban đầu, kèm bảng lịch trả nợ chi tiết."
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="max-w-7xl mx-auto p-4 md:p-8">
+        
+        <div className="mb-8 flex justify-between items-center print:hidden">
+          <a href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors bg-slate-100 hover:bg-blue-50 px-4 py-2 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Quay lại trang chủ
+          </a>
+          <button onClick={handlePrint} className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            In lịch trả nợ / Lưu PDF
+          </button>
+        </div>
+
         <h1 className="text-3xl font-black text-slate-900 mb-2 text-center uppercase">
           Công Cụ Tính Lãi Vay Ngân Hàng
         </h1>
@@ -103,8 +106,7 @@ export default function LoanCalculator() {
         </p>
 
         <div className="flex flex-col lg:flex-row gap-8 mb-12">
-          {/* CỘT NHẬP LIỆU */}
-          <div className="w-full lg:w-1/3 bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8 h-fit">
+          <div className="w-full lg:w-1/3 bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8 h-fit print:border-none print:shadow-none">
             <div className="mb-6">
               <label className="block text-sm font-bold text-slate-700 mb-2">Số tiền vay (VNĐ)</label>
               <input 
@@ -139,7 +141,7 @@ export default function LoanCalculator() {
               </div>
             </div>
 
-            <div className="mb-2">
+            <div className="mb-2 print:hidden">
               <label className="block text-sm font-bold text-slate-700 mb-3">Phương pháp tính</label>
               <div className="flex flex-col gap-3">
                 <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
@@ -154,7 +156,6 @@ export default function LoanCalculator() {
             </div>
           </div>
 
-          {/* CỘT TỔNG QUAN */}
           <div className="w-full lg:w-2/3 flex flex-col gap-6">
             <div className="bg-slate-900 rounded-3xl shadow-xl p-6 md:p-8 text-white">
               <h3 className="text-lg font-semibold text-slate-400 mb-6 uppercase tracking-wider">Tóm Tắt Khoản Vay</h3>
@@ -175,13 +176,12 @@ export default function LoanCalculator() {
               </div>
             </div>
 
-            {/* BẢNG LỊCH TRẢ NỢ */}
             {schedule.length > 0 && (
               <div className="bg-white rounded-3xl shadow-sm border border-slate-200/60 overflow-hidden">
-                <div className="p-6 border-b border-slate-100 bg-slate-50">
+                <div className="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
                   <h3 className="text-lg font-bold text-slate-800">Lịch Trả Nợ Chi Tiết</h3>
                 </div>
-                <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
+                <div className="overflow-x-auto max-h-[500px] overflow-y-auto print:max-h-none">
                   <table className="w-full text-left text-sm whitespace-nowrap">
                     <thead className="bg-slate-50 sticky top-0 z-10 shadow-sm">
                       <tr>

@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 
-// Khai báo hằng số luật mới nhất 2026
 const LUONG_CO_SO = 2530000; 
 const LUONG_TOI_THIEU_VUNG = {
   1: 5310000,
@@ -86,31 +85,37 @@ export default function GrossNetCalculator() {
 
   const formatCurrency = (val: number) => Math.round(val).toLocaleString('vi-VN');
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Công cụ tính lương Gross sang Net 2026",
+    "name": "Công cụ tính lương Gross sang Net chuẩn xác 2026",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "VND"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Số Chuẩn"
-    },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" },
+    "publisher": { "@type": "Organization", "name": "Số Chuẩn" },
     "description": "Hệ thống quy đổi lương Gross sang Net chuẩn xác nhất dựa trên quy định Luật Thuế và Bảo hiểm 2026."
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="max-w-7xl mx-auto p-4 md:p-8">
+        
+        <div className="mb-8 flex justify-between items-center print:hidden">
+          <a href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors bg-slate-100 hover:bg-blue-50 px-4 py-2 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Quay lại trang chủ
+          </a>
+          <button onClick={handlePrint} className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            In báo cáo / Lưu PDF
+          </button>
+        </div>
+
         <h1 className="text-3xl font-black text-slate-900 mb-2 text-center">
           CÔNG CỤ TÍNH LƯƠNG GROSS SANG NET CHUẨN 2026
         </h1>
@@ -119,8 +124,7 @@ export default function GrossNetCalculator() {
         </p>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* CỘT NHẬP LIỆU */}
-          <div className="w-full lg:w-1/2 bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8">
+          <div className="w-full lg:w-1/2 bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8 print:border-none print:shadow-none">
             
             <div className="mb-6">
               <label className="block text-sm font-bold text-slate-700 mb-2">Thu nhập của bạn (VNĐ)</label>
@@ -181,7 +185,7 @@ export default function GrossNetCalculator() {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 print:hidden">
               <button 
                 onClick={() => setIsGross(true)}
                 className={`flex-1 py-4 rounded-xl font-black text-sm transition-all ${isGross ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
@@ -197,9 +201,8 @@ export default function GrossNetCalculator() {
             </div>
           </div>
 
-          {/* CỘT KẾT QUẢ BÁO CÁO */}
           <div className="w-full lg:w-1/2">
-            <div className="bg-slate-900 rounded-3xl shadow-xl p-6 md:p-8 text-white sticky top-8">
+            <div className="bg-slate-900 rounded-3xl shadow-xl p-6 md:p-8 text-white sticky top-8 print:bg-slate-900 print:text-white">
               <h3 className="text-lg font-semibold text-slate-400 mb-6">Báo Cáo Chiết Tính Lương</h3>
               
               <div className="flex justify-between items-end mb-6 pb-6 border-b border-slate-800">
