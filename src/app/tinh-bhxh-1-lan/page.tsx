@@ -9,74 +9,40 @@ const INFLATION_RATE: Record<number, number> = {
   2016: 1.38, 2017: 1.38, 2018: 1.32, 2019: 1.28, 2020: 1.23,
   2021: 1.20, 2022: 1.18, 2023: 1.14, 2024: 1.11, 2025: 1.07, 2026: 1.0
 };
-
-interface Period {
-  id: string;
-  fromMonth: string;
-  fromYear: string;
-  toMonth: string;
-  toYear: string;
-  salary: string;
-}
+interface Period { id: string; fromMonth: string; fromYear: string; toMonth: string; toYear: string; salary: string; }
 
 export default function SocialInsuranceCalculator() {
-  const [periods, setPeriods] = useState<Period[]>([
-    { id: '1', fromMonth: '01', fromYear: '2018', toMonth: '12', toYear: '2022', salary: '15000000' }
-  ]);
+  const [periods, setPeriods] = useState<Period[]>([{ id: '1', fromMonth: '01', fromYear: '2018', toMonth: '12', toYear: '2022', salary: '15000000' }]);
 
-  const addPeriod = () => {
-    setPeriods([...periods, { id: Date.now().toString(), fromMonth: '', fromYear: '', toMonth: '', toYear: '', salary: '' }]);
-  };
-
-  const removePeriod = (id: string) => {
-    if (periods.length > 1) {
-      setPeriods(periods.filter(p => p.id !== id));
-    }
-  };
-
-  const updatePeriod = (id: string, field: keyof Period, value: string) => {
-    setPeriods(periods.map(p => p.id === id ? { ...p, [field]: value } : p));
-  };
+  const addPeriod = () => { setPeriods([...periods, { id: Date.now().toString(), fromMonth: '', fromYear: '', toMonth: '', toYear: '', salary: '' }]); };
+  const removePeriod = (id: string) => { if (periods.length > 1) { setPeriods(periods.filter(p => p.id !== id)); } };
+  const updatePeriod = (id: string, field: keyof Period, value: string) => { setPeriods(periods.map(p => p.id === id ? { ...p, [field]: value } : p)); };
 
   const result = useMemo(() => {
-    let totalMonthsBefore2014 = 0;
-    let totalMonthsAfter2014 = 0;
-    let totalAdjustedSalary = 0;
-    let totalValidMonths = 0;
+    let totalMonthsBefore2014 = 0; let totalMonthsAfter2014 = 0; let totalAdjustedSalary = 0; let totalValidMonths = 0;
 
     periods.forEach(p => {
-      const fM = parseInt(p.fromMonth) || 0;
-      const fY = parseInt(p.fromYear) || 0;
-      const tM = parseInt(p.toMonth) || 0;
-      const tY = parseInt(p.toYear) || 0;
+      const fM = parseInt(p.fromMonth) || 0; const fY = parseInt(p.fromYear) || 0;
+      const tM = parseInt(p.toMonth) || 0; const tY = parseInt(p.toYear) || 0;
       const sal = parseInt(p.salary.replace(/,/g, '')) || 0;
 
       if (fM && fY && tM && tY && sal) {
         for (let y = fY; y <= tY; y++) {
-          const startMonth = (y === fY) ? fM : 1;
-          const endMonth = (y === tY) ? tM : 12;
+          const startMonth = (y === fY) ? fM : 1; const endMonth = (y === tY) ? tM : 12;
           const monthsInYear = endMonth - startMonth + 1;
-          
           if (monthsInYear > 0) {
             const inflation = INFLATION_RATE[y] || 1.0;
             totalAdjustedSalary += (sal * inflation * monthsInYear);
             totalValidMonths += monthsInYear;
-
-            if (y < 2014) {
-              totalMonthsBefore2014 += monthsInYear;
-            } else {
-              totalMonthsAfter2014 += monthsInYear;
-            }
+            if (y < 2014) totalMonthsBefore2014 += monthsInYear; else totalMonthsAfter2014 += monthsInYear;
           }
         }
       }
     });
 
     const averageSalary = totalValidMonths > 0 ? totalAdjustedSalary / totalValidMonths : 0;
-    
     let yearsBefore2014 = Math.floor(totalMonthsBefore2014 / 12);
     let monthsLeftBefore = totalMonthsBefore2014 % 12;
-    
     let totalMonthsAfterIncludingLeftover = totalMonthsAfter2014 + monthsLeftBefore;
     let yearsAfter2014 = Math.floor(totalMonthsAfterIncludingLeftover / 12);
     let monthsLeftAfter = totalMonthsAfterIncludingLeftover % 12;
@@ -89,30 +55,33 @@ export default function SocialInsuranceCalculator() {
     const payoutAfter = roundedYearsAfter * 2 * averageSalary;
     const totalPayout = payoutBefore + payoutAfter;
 
-    return {
-      totalMonths: totalValidMonths,
-      averageSalary,
-      payoutBefore,
-      payoutAfter,
-      totalPayout
-    };
+    return { totalMonths: totalValidMonths, averageSalary, payoutBefore, payoutAfter, totalPayout };
   }, [periods]);
 
   const formatCurrency = (val: number) => Math.round(val).toLocaleString('vi-VN');
-
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => { window.print(); };
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Công cụ tính Bảo hiểm xã hội 1 lần chuẩn xác",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" },
-    "publisher": { "@type": "Organization", "name": "Số Chuẩn" },
-    "description": "Tính toán chính xác số tiền nhận được khi rút BHXH 1 lần, áp dụng tự động hệ số trượt giá mới nhất."
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Công cụ tính Bảo hiểm xã hội 1 lần",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Hệ số trượt giá BHXH là gì?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Là chỉ số lạm phát do Nhà nước công bố hàng năm để nhân bù đắp vào mức lương đóng BHXH các năm trước của người lao động, đảm bảo không bị thiệt thòi khi nhận tiền." }
+          }
+        ]
+      }
+    ]
   };
 
   return (
@@ -122,107 +91,126 @@ export default function SocialInsuranceCalculator() {
         
         <div className="mb-8 flex justify-between items-center print:hidden">
           <a href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors bg-slate-100 hover:bg-blue-50 px-4 py-2 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            Quay lại trang chủ
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg> Quay lại trang chủ
           </a>
           <button onClick={handlePrint} className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            In báo cáo / Lưu PDF
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> In báo cáo / Lưu PDF
           </button>
         </div>
 
-        <h1 className="text-3xl font-black text-slate-900 mb-2 text-center uppercase">
-          TÍNH BẢO HIỂM XÃ HỘI 1 LẦN (CHUẨN 2026)
-        </h1>
-        <p className="text-center text-slate-500 mb-10 max-w-2xl mx-auto">
-          Tự động áp dụng hệ số trượt giá (lạm phát) và phân tách chặng đóng trước/sau năm 2014 theo quy định mới nhất của Luật BHXH.
-        </p>
+        <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 text-center uppercase tracking-tight">Tính Bảo Hiểm Xã Hội 1 Lần</h1>
+        <p className="text-center text-slate-500 mb-10 max-w-2xl mx-auto">Tự động áp dụng hệ số trượt giá và phân tách chặng đóng trước/sau năm 2014 theo quy định mới nhất.</p>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="w-full lg:w-[55%]">
-            <div className="bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8 print:border-none print:shadow-none">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-slate-800 text-lg">Quá trình đóng BHXH</h3>
-                <button 
-                  onClick={addPeriod}
-                  className="bg-blue-50 text-blue-600 font-bold px-4 py-2 rounded-xl text-sm hover:bg-blue-100 transition-colors print:hidden"
-                >
-                  + Thêm giai đoạn
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                {periods.map((period, index) => (
-                  <div key={period.id} className="p-5 bg-slate-50 border border-slate-200 rounded-2xl relative group">
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity print:hidden">
-                      {periods.length > 1 && (
-                        <button onClick={() => removePeriod(period.id)} className="text-rose-400 hover:text-rose-600 font-bold text-sm">Xóa</button>
-                      )}
-                    </div>
-                    <div className="text-sm font-bold text-slate-400 mb-3">Giai đoạn {index + 1}</div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-500 mb-1">Từ (Tháng/Năm)</label>
-                        <div className="flex gap-2">
-                          <input type="text" placeholder="MM" className="w-1/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.fromMonth} onChange={(e) => updatePeriod(period.id, 'fromMonth', e.target.value.replace(/\D/g, '').slice(0, 2))} />
-                          <input type="text" placeholder="YYYY" className="w-2/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.fromYear} onChange={(e) => updatePeriod(period.id, 'fromYear', e.target.value.replace(/\D/g, '').slice(0, 4))} />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-500 mb-1">Đến (Tháng/Năm)</label>
-                        <div className="flex gap-2">
-                          <input type="text" placeholder="MM" className="w-1/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.toMonth} onChange={(e) => updatePeriod(period.id, 'toMonth', e.target.value.replace(/\D/g, '').slice(0, 2))} />
-                          <input type="text" placeholder="YYYY" className="w-2/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.toYear} onChange={(e) => updatePeriod(period.id, 'toYear', e.target.value.replace(/\D/g, '').slice(0, 4))} />
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-500 mb-1">Mức lương đóng (VNĐ)</label>
-                      <input type="text" className="w-full p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 font-medium" value={period.salary} onChange={(e) => updatePeriod(period.id, 'salary', e.target.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ","))} />
-                    </div>
+        <div className="flex flex-col lg:flex-row gap-8 mb-16">
+          <div className="w-full lg:w-[55%] bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8 print:border-none print:shadow-none">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-bold text-slate-800 text-lg">Quá trình đóng BHXH</h3>
+              <button onClick={addPeriod} className="bg-blue-50 text-blue-600 font-bold px-4 py-2 rounded-xl text-sm hover:bg-blue-100 transition-colors print:hidden">+ Thêm giai đoạn</button>
+            </div>
+            <div className="space-y-4">
+              {periods.map((period, index) => (
+                <div key={period.id} className="p-5 bg-slate-50 border border-slate-200 rounded-2xl relative group">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity print:hidden">{periods.length > 1 && (<button onClick={() => removePeriod(period.id)} className="text-rose-400 hover:text-rose-600 font-bold text-sm">Xóa</button>)}</div>
+                  <div className="text-sm font-bold text-slate-400 mb-3">Giai đoạn {index + 1}</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div><label className="block text-xs font-bold text-slate-500 mb-1">Từ (Tháng/Năm)</label><div className="flex gap-2"><input type="text" placeholder="MM" className="w-1/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.fromMonth} onChange={(e) => updatePeriod(period.id, 'fromMonth', e.target.value.replace(/\D/g, '').slice(0, 2))} /><input type="text" placeholder="YYYY" className="w-2/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.fromYear} onChange={(e) => updatePeriod(period.id, 'fromYear', e.target.value.replace(/\D/g, '').slice(0, 4))} /></div></div>
+                    <div><label className="block text-xs font-bold text-slate-500 mb-1">Đến (Tháng/Năm)</label><div className="flex gap-2"><input type="text" placeholder="MM" className="w-1/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.toMonth} onChange={(e) => updatePeriod(period.id, 'toMonth', e.target.value.replace(/\D/g, '').slice(0, 2))} /><input type="text" placeholder="YYYY" className="w-2/3 p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 text-center" value={period.toYear} onChange={(e) => updatePeriod(period.id, 'toYear', e.target.value.replace(/\D/g, '').slice(0, 4))} /></div></div>
                   </div>
-                ))}
-              </div>
+                  <div><label className="block text-xs font-bold text-slate-500 mb-1">Mức lương đóng (VNĐ)</label><input type="text" className="w-full p-3 bg-white border border-slate-200 rounded-lg outline-none focus:border-blue-500 font-medium" value={period.salary} onChange={(e) => updatePeriod(period.id, 'salary', e.target.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ","))} /></div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="w-full lg:w-[45%]" >
+          <div className="w-full lg:w-[45%]">
             <div className="bg-slate-900 rounded-3xl shadow-xl p-6 md:p-8 text-white sticky top-8 print:bg-slate-900 print:text-white">
               <h3 className="text-lg font-semibold text-slate-400 mb-6">Báo Cáo Chiết Tính Rút BHXH</h3>
-              
               <div className="grid grid-cols-2 gap-4 mb-6 pb-6 border-b border-slate-800">
-                <div>
-                  <div className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">Tổng thời gian</div>
-                  <div className="text-xl font-bold text-white">{Math.floor(result.totalMonths / 12)} năm {result.totalMonths % 12} tháng</div>
-                </div>
-                <div>
-                  <div className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">Mức lương BQ (Đã nhân trượt giá)</div>
-                  <div className="text-xl font-bold text-blue-400">{formatCurrency(result.averageSalary)}đ</div>
-                </div>
+                <div><div className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">Tổng thời gian</div><div className="text-xl font-bold text-white">{Math.floor(result.totalMonths / 12)} năm {result.totalMonths % 12} tháng</div></div>
+                <div><div className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">Lương BQ (Nhân trượt giá)</div><div className="text-xl font-bold text-blue-400">{formatCurrency(result.averageSalary)}đ</div></div>
               </div>
-
               <div className="space-y-4 mb-6 pb-6 border-b border-slate-800">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-400 text-sm">Tiền BHXH trước 2014</span>
-                  <span className="font-bold text-slate-200">{formatCurrency(result.payoutBefore)}đ</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-400 text-sm">Tiền BHXH từ 2014 trở đi</span>
-                  <span className="font-bold text-slate-200">{formatCurrency(result.payoutAfter)}đ</span>
-                </div>
+                <div className="flex justify-between items-center"><span className="text-slate-400 text-sm">Tiền BHXH trước 2014</span><span className="font-bold text-slate-200">{formatCurrency(result.payoutBefore)}đ</span></div>
+                <div className="flex justify-between items-center"><span className="text-slate-400 text-sm">Tiền BHXH từ 2014 trở đi</span><span className="font-bold text-slate-200">{formatCurrency(result.payoutAfter)}đ</span></div>
               </div>
-
               <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 shadow-inner border border-blue-500/50">
-                <div className="text-sm font-bold text-blue-200 mb-2 uppercase tracking-wider">Tổng Tiền BHXH 1 Lần Nhận Được</div>
+                <div className="text-sm font-bold text-blue-200 mb-2 uppercase tracking-wider">Tổng Tiền 1 Lần Nhận Được</div>
                 <div className="text-4xl md:text-5xl font-black text-white">{formatCurrency(result.totalPayout)}đ</div>
               </div>
-              
-              <p className="mt-4 text-xs text-slate-500 text-center">
-                *Kết quả đã bao gồm hệ số trượt giá cập nhật. Các trường hợp lẻ tháng được làm tròn theo quy định của BHXH Việt Nam.
-              </p>
+              <p className="mt-4 text-xs text-slate-500 text-center">*Kết quả đã bao gồm hệ số trượt giá cập nhật. Các trường hợp lẻ tháng được làm tròn theo quy định của BHXH Việt Nam.</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* KHU VỰC NỘI DUNG MỞ RỘNG (DARK THEME) */}
+      <div className="bg-slate-900 border-t border-slate-800 text-slate-300 py-16 print:hidden">
+        <div className="max-w-4xl mx-auto p-4 md:p-8">
+          
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-6">1. Bảng hệ số trượt giá mới nhất</h2>
+            <div className="overflow-x-auto bg-slate-800/50 border border-slate-700 rounded-2xl">
+              <table className="w-full text-center text-sm">
+                <thead>
+                  <tr className="bg-slate-800 text-white font-bold"><th className="p-3 border-b border-slate-700">Năm đóng</th><th className="p-3 border-b border-slate-700 border-l">Hệ số</th><th className="p-3 border-b border-slate-700 border-l">Năm đóng</th><th className="p-3 border-b border-slate-700 border-l">Hệ số</th></tr>
+                </thead>
+                <tbody className="text-slate-400">
+                  <tr><td className="p-3 border-b border-slate-700">Trước 2015</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">&gt; 1.42</td><td className="p-3 border-b border-slate-700 border-l">2021</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.20</td></tr>
+                  <tr><td className="p-3 border-b border-slate-700">2018</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.32</td><td className="p-3 border-b border-slate-700 border-l">2022</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.18</td></tr>
+                  <tr><td className="p-3 border-b border-slate-700">2019</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.28</td><td className="p-3 border-b border-slate-700 border-l">2023</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.14</td></tr>
+                  <tr><td className="p-3 border-b border-slate-700">2020</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.23</td><td className="p-3 border-b border-slate-700 border-l">2024</td><td className="p-3 border-b border-slate-700 border-l text-blue-400">1.11</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-slate-500 mt-3">*Hệ số trượt giá được hệ thống của Số Chuẩn tự động nhân vào kết quả tính toán phía trên.</p>
+          </div>
+
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white mb-6">2. Hồ sơ & Thủ tục chuẩn bị rút BHXH</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <span className="text-xl mb-3 block">📄</span>
+                <p className="text-sm text-slate-300">Sổ BHXH gốc đã được chốt (bản gốc kèm các tờ rời).</p>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <span className="text-xl mb-3 block">🪪</span>
+                <p className="text-sm text-slate-300">Căn cước công dân (CCCD) gắn chip bản chính để đối chiếu.</p>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <span className="text-xl mb-3 block">🏦</span>
+                <p className="text-sm text-slate-300">Số tài khoản ngân hàng chính chủ để nhận tiền chuyển khoản.</p>
+              </div>
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-5">
+                <span className="text-xl mb-3 block">📱</span>
+                <p className="text-sm text-slate-300">Tài khoản VssID để tra cứu nhanh quá trình đóng nếu cần.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* KHỐI BẢN ĐỒ VÀ LIÊN HỆ */}
+          <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8">
+            <h2 className="text-2xl font-bold text-white mb-6">Liên hệ Tư vấn & Cơ quan BHXH</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <p className="text-slate-400">Nếu bạn gặp khó khăn trong việc làm thủ tục hoặc tính toán quá trình đóng phức tạp, hãy liên hệ ngay với chuyên gia của chúng tôi.</p>
+                <ul className="space-y-3 text-sm text-slate-300">
+                  <li className="flex gap-3 items-center">📍 <span>Trụ sở chính: Quận Đống Đa, Hà Nội, Việt Nam</span></li>
+                  <li className="flex gap-3 items-center">📞 <span>Hotline: 1900.xxxx</span></li>
+                  <li className="flex gap-3 items-center">✉️ <span>Email: contact@sochuan.vn</span></li>
+                </ul>
+                <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl mt-4 transition-colors w-full md:w-auto">
+                  Tư vấn rút BHXH miễn phí
+                </button>
+              </div>
+              <div className="h-64 rounded-xl overflow-hidden border border-slate-700">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.095593888365!2d105.8239019!3d21.0288602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab748a044321%3A0x6b3017a61d6706e!2zxJDhu5FuZyDEkGEsIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
+                  width="100%" height="100%" style={{ border: 0 }} allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Bản đồ định vị BHXH">
+                </iframe>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </>
