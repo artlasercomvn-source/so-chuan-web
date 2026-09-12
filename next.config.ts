@@ -2,10 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typescript: {
-    // Bỏ qua lỗi kiểm duyệt ngữ pháp khắt khe của thư viện Recharts
+    // Bỏ qua lỗi TypeScript để ép Vercel xuất bản giao diện
     ignoreBuildErrors: true,
   },
   eslint: {
+    // Bỏ qua lỗi cảnh báo cú pháp khắt khe
     ignoreDuringBuilds: true,
   },
 };
