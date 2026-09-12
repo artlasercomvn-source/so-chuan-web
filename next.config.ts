@@ -1,12 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   typescript: {
-    // Bỏ qua lỗi TypeScript để ép Vercel xuất bản giao diện
     ignoreBuildErrors: true,
   },
   eslint: {
-    // Bỏ qua lỗi cảnh báo cú pháp khắt khe
     ignoreDuringBuilds: true,
   },
 };
