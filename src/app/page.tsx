@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 // ==========================================
-// 1. DATA: 16 CÔNG CỤ (CHUYỂN EMOJI THÀNH SVG ICONS)
+// 1. DATA: 16 CÔNG CỤ (SVG ICONS)
 // ==========================================
 const CATEGORIES = [
   { id: 'all', name: 'Tất cả tiện ích' },
@@ -13,7 +13,6 @@ const CATEGORIES = [
   { id: 'life', name: 'Đời Sống & Xe Cộ' }
 ];
 
-// Hàm render SVG đồng nhất chuẩn World-Class
 const IconRender = ({ path }: { path: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
     <path strokeLinecap="round" strokeLinejoin="round" d={path} />
@@ -126,9 +125,6 @@ const TOOLS = [
   }
 ];
 
-// ==========================================
-// 2. MAIN PAGE COMPONENT
-// ==========================================
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -141,30 +137,10 @@ export default function HomePage() {
   });
 
   return (
-    <main className="w-full font-sans selection:bg-blue-200 selection:text-blue-900 bg-[#FAFAFA] min-h-screen relative overflow-hidden">
+    <main className="w-full relative overflow-hidden">
       
-      {/* ==========================================
-          TOP NAVIGATION (Chuẩn App Quốc tế)
-          ========================================== */}
-      <nav className="absolute top-0 w-full z-50 bg-white/60 backdrop-blur-md border-b border-slate-200/50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black text-lg">S</div>
-            <span className="font-black text-slate-900 text-lg tracking-tight">SỐ CHUẨN</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            <a href="#" className="hover:text-blue-600 transition-colors">Trang chủ</a>
-            <a href="#" className="hover:text-blue-600 transition-colors">Tính năng</a>
-            <a href="#" className="hover:text-blue-600 transition-colors">Hướng dẫn</a>
-          </div>
-          <div>
-            <button className="px-5 py-2 bg-slate-900 text-white rounded-full text-sm font-bold shadow-sm hover:bg-blue-600 transition-colors">Đăng nhập</button>
-          </div>
-        </div>
-      </nav>
-
       {/* BACKGROUND LAYER */}
-      <div className="absolute inset-0 z-0 pointer-events-none mt-16">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-500 opacity-[0.15] blur-[100px]"></div>
         <div className="absolute left-60 right-0 top-20 -z-10 m-auto h-[250px] w-[250px] rounded-full bg-emerald-400 opacity-[0.1] blur-[100px]"></div>
@@ -173,7 +149,7 @@ export default function HomePage() {
       {/* ==========================================
           HERO SECTION 
           ========================================== */}
-      <section className="relative z-10 pt-32 pb-16 md:pt-40 md:pb-24 flex flex-col items-center px-4 md:px-8">
+      <section className="relative z-10 pt-16 pb-16 md:pt-24 md:pb-24 flex flex-col items-center px-4 md:px-8">
         
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200/60 shadow-sm mb-8 hover:shadow-md transition-shadow">
           <span className="flex h-2 w-2 relative">
@@ -191,7 +167,7 @@ export default function HomePage() {
         </h1>
         
         <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed mb-12 text-center font-medium">
-          Nền tảng tiện ích siêu cấp. Tự động xử lý hàng tỷ phép tính ngay trên trình duyệt, bảo mật tuyệt đối 100% dữ liệu cá nhân của bạn.
+          Nền tảng tiện ích siêu cấp. Tự động xử lý hàng tỷ phép tính ngay trên trình duyệt, không yêu cầu đăng nhập, bảo mật tuyệt đối dữ liệu của bạn.
         </p>
 
         {/* SEARCH BAR SPOTLIGHT */}
@@ -274,18 +250,10 @@ export default function HomePage() {
 
         </div>
       </section>
-
-      {/* ==========================================
-          FOOTER DUY NHẤT
-          ========================================== */}
-      <footer className="bg-white border-t border-slate-200 py-12 relative z-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center flex flex-col items-center">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center text-white font-black text-2xl mb-4 shadow-lg shadow-blue-200">S</div>
-          <h2 className="font-black text-slate-800 text-lg mb-2 tracking-tight">HỆ THỐNG SỐ CHUẨN</h2>
-          <p className="text-sm text-slate-500 mb-6 max-w-md">Bảo mật 100%. Mọi thuật toán được thực thi trực tiếp trên trình duyệt của bạn (Client-side computing).</p>
-          <div className="text-xs font-bold text-slate-400">© 2026 SoChuan.vn. All rights reserved.</div>
-        </div>
-      </footer>
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        .custom-scrollbar::-webkit-scrollbar { height: 0px; width: 0px; }
+      `}} />
     </main>
   );
 }
