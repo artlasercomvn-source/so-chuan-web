@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,6 +10,24 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi">
+      <head>
+        {/* ==========================================
+            GOOGLE ANALYTICS GA4 (Mã của anh Sĩ)
+            ========================================== */}
+        <Script 
+          src="https://www.googletagmanager.com/gtag/js?id=G-9HP9YDHH7M" 
+          strategy="afterInteractive" 
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9HP9YDHH7M');
+          `}
+        </Script>
+      </head>
+
       <body className="bg-[#FAFAFA] text-slate-900 font-sans selection:bg-blue-200 selection:text-blue-900">
         
         {/* HEADER TỐI GIẢN (Chỉ Logo - Dồn focus vào nội dung) */}
