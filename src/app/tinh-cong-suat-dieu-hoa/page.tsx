@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 
+// Đã bổ sung hàm formatCurrency để sửa lỗi Vercel
+const formatCurrency = (val: number) => Math.round(val).toLocaleString('vi-VN');
+
 export default function AC_BTU_Calculator() {
   const [area, setArea] = useState<string>("20");
   const [height, setHeight] = useState<string>("3.5");
-  const [roomType, setRoomType] = useState<number>(1.0); // Hệ số phòng
+  const [roomType, setRoomType] = useState<number>(1.0);
   
-  // Các yếu tố phụ tải nhiệt
   const [isWestFacing, setIsWestFacing] = useState<boolean>(false);
   const [isTopFloor, setIsTopFloor] = useState<boolean>(false);
   const [manyWindows, setManyWindows] = useState<boolean>(false);
@@ -24,27 +26,19 @@ export default function AC_BTU_Calculator() {
     if (key) localStorage.setItem(key, value.toString());
   };
 
-  // --- Thuật toán Nhiệt lạnh Chuẩn kỹ sư ---
   const result = useMemo(() => {
     const a = parseFloat(area) || 0;
     const h = parseFloat(height) || 0;
     if (a <= 0 || h <= 0) return null;
 
-    // 1. Thể tích phòng (m3)
     const volume = a * h;
-
-    // 2. Công suất cơ bản (200 BTU / 1 m3 khối không khí)
     let baseBTU = volume * 200;
-
-    // 3. Nhân hệ số loại phòng (Phòng ngủ = 1, Khách = 1.1, Bếp = 1.15)
     baseBTU = baseBTU * roomType;
 
-    // 4. Cộng phụ tải nhiệt thất thoát
-    if (isWestFacing) baseBTU *= 1.15; // Nắng chiếu tường +15%
-    if (isTopFloor) baseBTU *= 1.15;   // Áp mái tôn nóng +15%
-    if (manyWindows) baseBTU *= 1.10;  // Thất thoát qua kính +10%
+    if (isWestFacing) baseBTU *= 1.15; 
+    if (isTopFloor) baseBTU *= 1.15;   
+    if (manyWindows) baseBTU *= 1.10;  
 
-    // 5. Làm tròn và Phân loại thiết bị đề xuất
     const requiredBTU = Math.round(baseBTU);
     let recommend = { btu: "9.000", hp: "1.0 HP", desc: "Thích hợp cho không gian nhỏ, phòng ngủ cá nhân." };
     
@@ -77,7 +71,6 @@ export default function AC_BTU_Calculator() {
           </header>
 
           <div className="flex flex-col xl:flex-row gap-6 md:gap-8 mb-16">
-            {/* NHẬP LIỆU */}
             <section className="w-full xl:w-[45%] bg-white rounded-[2rem] shadow-sm border border-slate-200/60 p-6 md:p-8 h-fit">
               <div className="space-y-6">
                 
@@ -121,7 +114,6 @@ export default function AC_BTU_Calculator() {
               </div>
             </section>
 
-            {/* KẾT QUẢ */}
             <section className="w-full xl:w-[55%] flex flex-col gap-6">
               {result && (
                 <>
@@ -144,7 +136,6 @@ export default function AC_BTU_Calculator() {
                     <p className="text-sm text-slate-300 relative z-10">{result.recommend.desc}</p>
                   </div>
 
-                  {/* CẢNH BÁO BẢO DƯỠNG */}
                   <div className="bg-sky-50 border border-sky-100 rounded-[2rem] p-6 md:p-8 shadow-sm">
                     <div className="flex items-start gap-4">
                       <div className="text-3xl">⚠️</div>
